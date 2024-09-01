@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import pyautogui
 
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
@@ -34,6 +35,18 @@ try:
 except Exception as e:
     print(f"버튼 클릭 오류: {e}")
 
-# 드라이버 종료
-time.sleep(10)
+# 검색하고 싶은 데이터 입력받기
+#keyword = pyautogui.prompt("검색어를 입력하세요 : ")
+# time.sleep(2)
+# driver.find_element(By.CLASS_NAME, "_combineHeader_expansion_search_button_u3JIl N=a:gnb.schopen").click()
+
+try:
+    search_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, 'button._combineHeader_expansion_search_button_u3JIl'))
+    )
+    search_button.click()
+except Exception as e:
+    print(f"버튼 클릭 오류: {e}")
+
+
 
