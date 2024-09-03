@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import time
 import pyautogui
+import csv
 
 #검색하고 싶은 내용 입력받기
 keyword = pyautogui.prompt("검색어를 입력하세요 : ")
@@ -71,6 +72,10 @@ except Exception as e:
 # 스크롤 전 높이
 before_h = driver.execute_script("return window.scrollY")
 
+# 파일 생성
+f = open(r"C:\Users\82104\Desktop\Py_workspace\Project\data.csv", 'w', newline='', encoding='CP949') 
+csvWriter = csv.writer(f)
+
 #무한 스크롤
 while True:
     # 맨 아래로 스크롤을 내린다.
@@ -89,3 +94,15 @@ while True:
 #상품 정보 div
 items = driver.find_elements(By.CLASS_NAME, 'product_info_main__piyRs')
 print(f'검색 결과 : {len(items)}개')
+
+#상품 정보 순회 데이터 출력
+for item in items:
+    title = item.find_element(By.CLASS_NAME, 'product_info_tit__c5_pb').text
+    price = item.find_element(By.CLASS_NAME, 'product_num__iQsWh').text
+    link_element = item.find_element(By.CSS_SELECTOR, '.product_btn_link__ArGCa._nlog_click.linkAnchor._nlog_impression_element')
+    link = link_element.get_attribute('href')
+    print(title, price, link)
+    csvWriter.writerow([title, price, link])
+    
+#파일 닫기
+f.close()
